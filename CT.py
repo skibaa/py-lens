@@ -83,5 +83,5 @@ def intLensInc(l: Lens[int, F, S]) -> Callable[[S], T]:
 myList = [10,20,30]
 myDict = {'aaa': [11,12], 'lst': myList}
 
-print(intLensInc(listIntLens)(myList))
-print(intLensInc(dictIntLens)(myDict))
+#print(intLensInc(listIntLens)(myList))
+#print(intLensInc(dictIntLens)(myDict))

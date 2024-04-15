@@ -1,20 +1,38 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 @dataclass(frozen=True)
-class Exchange:
+class Person:
     name: str
-    location: str
+    age: int
+
+@dataclass(frozen=True)
+class Company:
+    name: str
+    ceo: Person
 
 # Example usage
-nyse = Exchange(name="New York Stock Exchange", location="New York, USA")
+sw = Company(name="SimilarWeb", ceo=Person("Or Ofer", age=40))
 
-# Attempting to modify the instance will raise an error
-try:
-    nyse.name = "NASDAQ"
-except AttributeError as e:
-    print(e)  # Prints an error message because the dataclass is frozen
+print(sw.ceo.age)
 
-# Using replace to create a modified instance
-from dataclasses import replace
-nyse_updated = replace(nyse, name="NASDAQ")
-print(nyse_updated)
+# sw.ceo.age = 41  ### error
+
+sw1 = replace(sw, ceo=replace(sw.ceo, age=sw.ceo.age+1))
+
+from CT import *
+
+comp2ceo_lens = gs2lens(
+    lambda company: company.ceo,
+    lambda company, newceo: replace(company, ceo=newceo)
+)
+
+person2age_lens = gs2lens(
+    lambda person: person.age,
+    lambda person, newage: replace(person, age=newage)
+)
+
+comp2age_lens = lambda x: comp2ceo_lens(person2age_lens(x))
+
+compCeoInc = intLensInc(comp2age_lens)
+
+print(compCeoInc(sw))
