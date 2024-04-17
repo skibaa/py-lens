@@ -35,4 +35,6 @@ comp2age_lens = lambda x: comp2ceo_lens(person2age_lens(x))
 
 compCeoInc = fmapLens(comp2age_lens, lambda a: a+1)
 
-print(compCeoInc(sw))
+sw2 = compCeoInc(sw)
+
+print(sw2)
