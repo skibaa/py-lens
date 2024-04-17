@@ -33,6 +33,6 @@ person2age_lens = gs2lens(
 
 comp2age_lens = lambda x: comp2ceo_lens(person2age_lens(x))
 
-compCeoInc = intLensInc(comp2age_lens)
+compCeoInc = fmapLens(comp2age_lens, lambda a: a+1)
 
 print(compCeoInc(sw))

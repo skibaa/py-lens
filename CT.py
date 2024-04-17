@@ -71,9 +71,9 @@ dictListLens: Lens[List[int], F, Dict[str, List[int]]] = gs2lens(dictListGetter,
 
 dictIntLens = lambda afb: dictListLens(listIntLens(afb))
 
-def intLensInc(l: Lens[int, F, S]) -> Callable[[S], T]:
+def fmapLens(l: Lens, f:Callable[[A], B]) -> Callable[[S], T]:
     def st(s: S) -> T:
-        afb = lambda a: IdFunctor(a+1)
+        afb = lambda a: IdFunctor(f(a))
         sft = l(afb)
         ft = sft(s)
         t = ft.getValue()
@@ -83,5 +83,5 @@ def intLensInc(l: Lens[int, F, S]) -> Callable[[S], T]:
 myList = [10,20,30]
 myDict = {'aaa': [11,12], 'lst': myList}
 
-#print(intLensInc(listIntLens)(myList))
-#print(intLensInc(dictIntLens)(myDict))
+#print(fmapLens(listIntLens, lambda a: a+1)(myList))
+#print(intLensInc(dictIntLens, lambda a: a+1)(myDict))
